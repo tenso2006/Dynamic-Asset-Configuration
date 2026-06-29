@@ -30,7 +30,7 @@ const  DynamicAssetForm = ({ assetType, onSubmit }: DynamicAssetFormProps) => {
     onSubmit({ assetType, ...data } as AssetFormPayload);
   });
 
-  const Fields = () => {
+  const renderFields = () => {
     return fieldConfig[assetType].map((field) => {
       const { type, name, label } = field;
       switch (type) {
@@ -59,7 +59,7 @@ const  DynamicAssetForm = ({ assetType, onSubmit }: DynamicAssetFormProps) => {
         <Typography variant="h6" gutterBottom>
           {assetType} Configuration
         </Typography>
-        <Fields/>
+        {renderFields()}
         <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
           <Button type="submit" variant="contained">
             Save Configuration

@@ -40,7 +40,6 @@ export type AssetFormPayload =
 function handleSubmit(payload: AssetFormPayload) {
   if (payload.assetType === 'TRANSFORMER') {
     // TypeScript knows payload.kvaRating is number here
-    console.log(payload.kvaRating);
   }
 }
 ```

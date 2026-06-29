@@ -53,6 +53,38 @@ describe('DynamicAssetForm — TRANSFORMER', () => {
       expect(onSubmit).toHaveBeenCalledWith({ assetType: 'TRANSFORMER', kvaRating: 100, coolingType: 'ONAN' });
     });
   });
+    it('shows error when kvaRating is zero', async () => {
+    const { user } = setup('TRANSFORMER');
+    await user.type(screen.getByLabelText(/kva rating/i), '0');
+    await user.click(submitBtn());
+    expect(
+      await screen.findByText(/kva rating must be a positive number/i),
+    ).toBeInTheDocument();
+  });
+
+  it('shows error when kvaRating is non-numeric', async () => {
+    const { user } = setup('TRANSFORMER');
+    await user.type(screen.getByLabelText(/kva rating/i), 'abc');
+    await user.click(submitBtn());
+    expect(
+      await screen.findByText(/kva rating must be a (positive number|number)/i),
+    ).toBeInTheDocument();
+  });
+
+  it('calls onSubmit with ONAF coolingType on valid input', async () => {
+    const { user, onSubmit } = setup('TRANSFORMER');
+    await user.type(screen.getByLabelText(/kva rating/i), '500');
+    await user.click(screen.getByLabelText(/cooling type/i));
+    await user.click(await screen.findByRole('option', { name: 'ONAF' }));
+    await user.click(submitBtn());
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledWith({
+        assetType: 'TRANSFORMER',
+        kvaRating: 500,
+        coolingType: 'ONAF',
+      });
+    });
+  });
 });
 
 describe('DynamicAssetForm — SECTION', () => {
@@ -98,5 +130,11 @@ describe('DynamicAssetForm — SECTION', () => {
     await waitFor(() => {
       expect(onSubmit).toHaveBeenCalledWith({ assetType: 'SECTION', groundedNeutral: false, conductorType: 'Copper' });
     });
+  });
+  it('shows error when conductorType is empty', async () => {
+    await user.click(submitBtn());
+    expect(
+      await screen.findByText(/conductor type must be at least 3 characters/i),
+    ).toBeInTheDocument();
   });
 });

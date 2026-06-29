@@ -1,75 +1,78 @@
-# React + TypeScript + Vite
+# Dynamic Asset Configuration
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React + TypeScript + Vite application for configuring asset forms for different asset types such as Transformer, Section, and Breaker. The app uses Material UI, React Hook Form, Zod, and Vitest.
 
-Currently, two official plugins are available:
+## Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Make sure you have the following installed locally:
 
-## React Compiler
+- Node.js 18 or newer
+- npm 9 or newer
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Getting started
 
-## Expanding the ESLint configuration
+1. Clone the repository and move into the project folder:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+   ```bash
+   cd Dynamic-Asset-Configuration
+   ```
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+2. Install dependencies:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+   ```bash
+   npm install
+   ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+3. Start the development server:
 
+   ```bash
+   npm run dev
+   ```
+
+4. Open the app in your browser at the local Vite URL shown in the terminal, usually:
+
+   ```text
+   http://localhost:5173
+   ```
+
+## Available scripts
+
+- `npm run dev` - Start the local Vite development server
+- `npm run build` - Create a production build
+- `npm run preview` - Preview the production build locally
+- `npm run test` - Run the Vitest test suite
+- `npm run test:coverage` - Run tests with coverage reporting
+- `npm run test:ui` - Open the Vitest UI
+- `npm run typecheck` - Run TypeScript type checking
+- `npm run lint` - Run ESLint
+- `npm run lint:fix` - Auto-fix ESLint issues
+
+## Project structure
+
+- `src/App.tsx` - Main app shell with asset type tabs
+- `src/pages/DynamicAssetFormPage/` - Dynamic form page for each asset type
+- `src/components/DynamicAssetForm/fields/` - Reusable form field components
+- `src/config/fieldConfig.ts` - Field definitions for each asset type
+- `src/schemas/assetSchemas.ts` - Form validation schemas
+- `src/test/` - Test setup and shared test utilities
+
+## Testing
+
+Run the test suite with:
+
+```bash
+npm test
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+To run a single test file:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm run test -- --run src/App.spec.tsx
 ```
+
+## Troubleshooting
+
+- If Vite reports that port `5173` is already in use, it will automatically choose the next available port.
+- If dependencies are not installed correctly, delete `node_modules` and `package-lock.json` and run `npm install` again.
+- If you see TypeScript or lint errors after pulling updates, run `npm install` and `npm run typecheck`.
+
