@@ -1,36 +1,76 @@
-import AppBar from '@mui/material/AppBar'
-import Toolbar from '@mui/material/Toolbar'
-import { Box, Container, Typography } from '@mui/material'
-import BoltIcon from '@mui/icons-material/Bolt'
+import { useState } from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
+import Paper from '@mui/material/Paper';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import DynamicAssetFormPage from './pages/DynamicAssetFormPage/DynamicAssetFormPage';
+import type { AssetFormPayload, AssetType } from './types/asset';
 
-function App() {
+const ASSET_TYPES: AssetType[] = ['TRANSFORMER', 'SECTION', 'BREAKER'];
+
+const App = () => {
+  const [assetType, setAssetType] = useState<AssetType>('TRANSFORMER');
+  const [lastPayload, setLastPayload] = useState<AssetFormPayload | null>(null);
+
+  const handleTabChange = (_: React.SyntheticEvent, next: AssetType) => {
+    setAssetType(next);
+    setLastPayload(null);
+  };
 
   return (
     <>
       <AppBar position="sticky" color="primary">
         <Toolbar variant="dense">
-          <BoltIcon sx={{ mr: 1, fontSize: 20 }} />
-          <Typography variant="h6" sx={{ fontWeight: 700, fontSize: '0.95rem', letterSpacing: '-0.01em' }}>
+          <Typography sx={{ mr: 1, fontSize: '1.1rem' }}>⚡</Typography>
+          <Typography variant="h6" sx={{ fontWeight: 700, fontSize: '0.95rem' }}>
             Dynamic Asset Configuration
-          </Typography>
-          <Box sx={{ flex: 1 }} />
-          <Typography variant="caption" sx={{ opacity: 0.7 }}>
-            v1.0.0
           </Typography>
         </Toolbar>
       </AppBar>
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-       <Box sx={{ mb: 3 }}>
-          <Typography variant="h5" gutterBottom>
-            Configure Assets
-          </Typography>
+
+      <Container maxWidth="md" sx={{ py: 4 }}>
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="h5" gutterBottom>Configure Assets</Typography>
           <Typography variant="body2" color="text.secondary">
-            Select an asset type below and fill in the configuration fields.
+            Select an asset type and fill in the configuration fields.
           </Typography>
         </Box>
-       </Container>
+
+        <Paper
+          elevation={0}
+          sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 2, mb: 3 }}
+        >
+          <Tabs value={assetType} onChange={handleTabChange} sx={{ px: 1 }}>
+            {ASSET_TYPES.map((t) => <Tab key={t} label={t} value={t} />)}
+          </Tabs>
+          <Divider />
+          <Box sx={{ p: 3 }}>
+            <DynamicAssetFormPage assetType={assetType} onSubmit={setLastPayload} />
+          </Box>
+        </Paper>
+
+        {lastPayload && (
+          <Box sx={{ mt: 3 }}>
+            <Typography variant="subtitle2" gutterBottom color="text.secondary">
+              Submitted Payload
+            </Typography>
+            <Paper
+              component="pre"
+              elevation={0}
+              sx={{ p: 2, bgcolor: 'grey.50', borderRadius: 2, fontSize: '0.82rem', overflow: 'auto' }}
+            >
+              {JSON.stringify(lastPayload, null, 2)}
+            </Paper>
+          </Box>
+        )}
+      </Container>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
