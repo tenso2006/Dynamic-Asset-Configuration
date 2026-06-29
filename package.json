@@ -4,11 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
+  "dev": "vite",
+  "build": "tsc && vite build",
+  "preview": "vite preview",
+  "test": "vitest",
+  "test:coverage": "vitest --coverage",
+  "typecheck": "tsc --noEmit"
+},
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
