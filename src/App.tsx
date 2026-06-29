@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -8,8 +8,12 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import DynamicAssetFormPage from './pages/DynamicAssetFormPage/DynamicAssetFormPage';
+import { CircularProgress } from '@mui/material';
 import type { AssetFormPayload, AssetType } from './types/asset';
+
+const DynamicAssetFormPage = lazy(() =>
+  import('./pages/DynamicAssetFormPage/DynamicAssetFormPage'),
+);
 
 const ASSET_TYPES: AssetType[] = ['TRANSFORMER', 'SECTION', 'BREAKER'];
 
@@ -50,7 +54,15 @@ const App = () => {
           </Tabs>
           <Divider />
           <Box sx={{ p: 3 }}>
-            <DynamicAssetFormPage assetType={assetType} onSubmit={setLastPayload} />
+            <Suspense
+              fallback={
+                <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+                  <CircularProgress size={28} />
+                </Box>
+              }
+            >
+              <DynamicAssetFormPage assetType={assetType} onSubmit={setLastPayload} />
+            </Suspense>
           </Box>
         </Paper>
 

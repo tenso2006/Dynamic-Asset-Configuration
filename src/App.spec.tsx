@@ -16,10 +16,10 @@ describe('App', () => {
     expect(screen.getByRole('tab', { name: 'BREAKER' })).toBeInTheDocument();
   });
 
-  it('shows TRANSFORMER fields by default', () => {
+  it('shows TRANSFORMER fields by default', async () => {
     render(<App />);
-    expect(screen.getByLabelText(/kva rating/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/cooling type/i)).toBeInTheDocument();
+    expect(await screen.findByLabelText(/kva rating/i)).toBeInTheDocument();
+    expect(await screen.findByLabelText(/cooling type/i)).toBeInTheDocument();
   });
 
   it('switches to SECTION fields when SECTION tab is clicked', async () => {
@@ -28,8 +28,8 @@ describe('App', () => {
 
     await user.click(screen.getByRole('tab', { name: 'SECTION' }));
 
-    expect(screen.getByLabelText(/grounded neutral/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/conductor type/i)).toBeInTheDocument();
+    expect(await screen.findByLabelText(/grounded neutral/i)).toBeInTheDocument();
+    expect(await screen.findByLabelText(/conductor type/i)).toBeInTheDocument();
     expect(screen.queryByLabelText(/kva rating/i)).not.toBeInTheDocument();
   });
 
@@ -37,8 +37,8 @@ describe('App', () => {
     const user = userEvent.setup();
     const { container } = render(<App />);
 
-    await user.type(screen.getByLabelText(/kva rating/i), '250');
-    await user.click(screen.getByLabelText(/cooling type/i));
+    await user.type(await screen.findByLabelText(/kva rating/i), '250');
+    await user.click(await screen.findByLabelText(/cooling type/i));
     await user.click(await screen.findByRole('option', { name: 'ONAF' }));
     await user.click(screen.getByRole('button', { name: /save configuration/i }));
 
@@ -56,8 +56,8 @@ describe('App', () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.type(screen.getByLabelText(/kva rating/i), '100');
-    await user.click(screen.getByLabelText(/cooling type/i));
+    await user.type(await screen.findByLabelText(/kva rating/i), '100');
+    await user.click(await screen.findByLabelText(/cooling type/i));
     await user.click(await screen.findByRole('option', { name: 'ONAN' }));
     await user.click(screen.getByRole('button', { name: /save configuration/i }));
 
